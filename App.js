@@ -1,80 +1,94 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, TouchableNativeFeedbackBase } from 'react-native';
 
 class App extends Component {
+
 
   constructor(props) {
     super(props);
     this.state = {
-      numero: 0,
-      botao: 'INICIAR',
-      lastTime: null,
+      textoFrase: 'Uma pessoa bonita, inteligente e amorosa entrará em sua vida.',
+      img: require('./src/biscoito.png'),
     };
 
-    //  Variavel do timer relogio.
-    this.timer = null;
-    this.start = this.start.bind(this);
-    this.reset = this.reset.bind(this);
+    this.quebraBiscoito = this.quebraBiscoito.bind(this)
+
+    this.frases = ['Uma pessoa bonita, inteligente e amorosa entrará em sua vida.',
+      'Um amigo duvidoso pode ser um inimigo camuflado.',
+      'Um amigo fiel é uma defesa forte.',
+      'Uma pena na mão é melhor do que um pássaro no ar.',
+      'Um novo começo irá colocá-lo no seu caminho.',
+      'Um amigo pede apenas seu tempo, não seu dinheiro.',
+      'Um amigo é um presente que você dá a si mesmo.',
+      'Um jogador não só perderá o que possui, mas também perderá o que não possui.',
+      'Um ovo de ouro de oportunidade cai em seu colo este mês.',
+      'Uma boa amizade costuma ser mais importante do que um romance apaixonado.',
+      'Um bom momento para terminar tarefas antigas.',
+      'Um palpite é a criatividade tentando lhe dizer algo.',
+      'Um amigo para toda a vida logo será feito.',
+      'Uma vida inteira de felicidade está à sua frente.',
+      'Um coração leve carrega você em todos os momentos difíceis.',
+      'Uma nova perspectiva virá com o novo ano.',
+      'Uma pessoa nunca é muito velha para aprender.',
+      'Uma pessoa de palavras e não de ações é como um jardim cheio de ervas daninhas.',
+      'Uma agradável surpresa está esperando por você.',
+      'Um lápis curto geralmente é melhor do que uma longa memória em qualquer dia.',
+      'Uma pequena doação é necessária. É a coisa certa a fazer.',
+      'Um sorriso é o seu tapete de boas-vindas pessoal.',
+      'Uma longa jornada tranquila! Grandes Expectativas.',
+      'Uma voz suave pode ser terrivelmente persuasiva.',
+      'Uma vida verdadeiramente rica contém amor e arte em abundância.', 'Aceite algo que você não pode mudar e se sentirá melhor.',
+      'A aventura pode ser uma verdadeira felicidade.',
+      'O conselho é como beijar. Não custa nada e é uma coisa agradável de se fazer.',
+      'Conselhos, quando mais necessários, são menos atendidos.',
+      'Todo o esforço que você está fazendo, no final das contas, será recompensado.',
+      'Todos os problemas que você tem passarão muito rapidamente.',
+      'Tudo irá bem com seu novo projeto.',
+      'Todo o seu trabalho árduo logo terá retorno.',
+      'Permita que a compaixão guie suas decisões.',
+      'Um conhecido do passado afetará você em um futuro próximo.',
+      'Um romance agradável pode começar a aparecer.',
+      'Uma pessoa importante oferecerá suporte a você.',
+      'Uma polegada de tempo é uma polegada de ouro.',
+      'Qualquer decisão que você tenha que tomar amanhã é uma boa decisão.',
+      'Ao toque do amor, todos se tornam poetas.',
+      'Tenha cuidado ou você pode cair em alguns truques hoje.',
+      'A beleza em suas várias formas atrai você.',
+      'Como você exige mais de si mesmo, os outros o respeitam profundamente.',
+      'Acredite em si mesmo e nos outros também.',
+      'Acredite que isso pode ser feito.',
+      'Melhor perguntar duas vezes do que se perder uma vez.',
+      'Aguarde sua hora, pois o sucesso está próximo.',
+      'Grave seu nome em seu coração e não em mármore.',
+      'A mudança está acontecendo em sua vida, então siga o fluxo!',
+      'Competências como a sua são subestimadas.',
+      'Parabéns! Você está no seu caminho.',
+    ]
   }
 
-  start() {
+  quebraBiscoito() {
+    let numeroAleatorio = Math.floor(Math.random() * this.frases.length)
 
-    if (this.timer != null) {
-      // Aqui vai parar o timer
-      clearInterval(this.timer);
-      this.timer = null;
-      this.setState({ botao: 'INICIAR' });
-    } else {
-      this.timer = setInterval(() => {
-        this.setState({ numero: this.state.numero + 0.1 })
-      }, 100);
-
-      this.setState({ botao: 'PARAR' });
-    }
-
-
-  }
-
-  reset() {
-    if (this.timer != null) {
-      clearInterval(this.timer);
-      this.timer = null;
-    }
     this.setState({
-      lastTime: this.state.numero,
-      numero: 0,
-      botao: 'INICIAR',
+      textoFrase: '"' + this.frases[numeroAleatorio] + '"',
+      img: require('./src/biscoitoAberto.png')
     })
   }
-
   render() {
 
-
     return (
-      <View style={styles.container}>
-
-        <Image source={require('./src/cronometro.png')}
-          style={styles.cronometro}
+      <View style={styles.container} >
+        <Image
+          source={this.state.img}
+          style={styles.img}
         />
-        <Text style={styles.timer}>{this.state.numero.toFixed(1)} </Text>
+        <Text style={styles.textoFrase}>{this.state.textoFrase}</Text>
+        <TouchableOpacity style={styles.botao} onPress={this.quebraBiscoito}>
+          <View style={styles.btnArea}>
+            <Text style={styles.btnTexto}>QUEBRAR BISCOITO</Text>
+          </View>
+        </TouchableOpacity>
 
-        <View style={styles.btnArea}>
-
-          <TouchableOpacity style={styles.btn} onPress={this.start}>
-            <Text style={styles.btnTexto}> {this.state.botao} </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.btn} onPress={this.reset}>
-            <Text style={styles.btnTexto}> LIMPAR </Text>
-          </TouchableOpacity>
-
-
-        </View>
-        <View style={styles.lastTime}>
-          <Text style={styles.textoTempo}>
-            {this.state.lastTime > 0 ? 'Ultimo tempo: ' + this.state.lastTime.toFixed(2)+' Segundos' :''}
-          </Text>
-        </View>
 
       </View>
 
@@ -88,40 +102,37 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#4682B4',
+    backgroundColor: '#0dcaf0',
   },
-  timer: {
-    marginTop: -160,
-    color: '#FFF',
-    fontSize: 65,
+  img: {
+    width: 250,
+    height: 250,
+  },
+  textoFrase: {
+    fontSize: 20,
+    color: '#FFFF00',
+    margin: 30,
+    fontStyle: 'italic',
+    textAlign: 'center',
     fontWeight: 'bold',
+  },
+  botao: {
+    width: 230,
+    height: 50,
+    borderWidth: 2,
+    borderColor: '#FFFF00',
+    borderRadius: 25,
   },
   btnArea: {
-    flexDirection: 'row',
-    marginTop: 70,
-    height: 40,
-  },
-  btn: {
     flex: 1,
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FFF',
-    height: 40,
-    margin: 10,
-    borderRadius: 9,
   },
   btnTexto: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
-    color: '#4682B4',
-  },
-  lastTime:{
-    marginTop:40,
-  },
-  textoTempo:{
-    fontSize:25,
-    fontStyle:'italic',
-    color: '#FFF',
+    color: '#FFFF00',
   },
 })
 
